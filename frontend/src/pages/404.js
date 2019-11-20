@@ -3,9 +3,16 @@ import PropTypes from 'prop-types';
 
 const NotFound = props => {
   return (
-    <div>
-      404
-    </div>
+    <>
+      {/* <Banner /> */}
+
+      <section className="top-sales">
+          <h2 className="text-center">Страница не найдена</h2>
+          <p>
+              Извините, такая страница не найдена!
+          </p>
+      </section>
+    </>
   );
 };
 
