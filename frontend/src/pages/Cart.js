@@ -29,7 +29,7 @@ const Cart = props => {
                       <td><button className="btn btn-outline-danger btn-sm">Удалить</button></td>
                   </tr>
                   <tr>
-                      <td colspan="5" className="text-right">Общая стоимость</td>
+                      <td colSpan="5" className="text-right">Общая стоимость</td>
                       <td>34 000 руб.</td>
                   </tr>
               </tbody>

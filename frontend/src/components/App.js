@@ -11,8 +11,8 @@ import Main from '../pages/Main';
 function App() {
   return (
     <div className="App">
-      <Layout>
-        <Router>
+      <Router>
+        <Layout>
           <Switch>
             <Route exact path='/about'>
               <About />
@@ -33,8 +33,8 @@ function App() {
               <NotFound />
             </Route>
           </Switch>
-        </Router>
-      </Layout>
+        </Layout>
+      </Router>
     </div>
   );
 }
