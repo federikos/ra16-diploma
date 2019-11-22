@@ -168,6 +168,17 @@ section {
   min-height: 300px;
 }
 
+.top-sales .card {
+  height: 100%;
+}
+
+.top-sales .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
 /* Catalog */
 .catalog {
   min-height: 600px;

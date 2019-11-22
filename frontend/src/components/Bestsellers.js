@@ -43,7 +43,6 @@ const Bestsellers = props => {
           <div className="row">
             {
               items.map(item => {
-                console.log(item)
                 return (
                   <div key={item.id} className="col-4">
                     <div className="card">
