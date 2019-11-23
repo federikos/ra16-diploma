@@ -168,17 +168,6 @@ section {
   min-height: 300px;
 }
 
-.top-sales .card {
-  height: 100%;
-}
-
-.top-sales .card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-}
-
 /* Catalog */
 .catalog {
   min-height: 600px;
@@ -190,6 +179,21 @@ section {
 }
 .catalog-item-card {
   margin-bottom: 1em;
+}
+
+.catalog-item-card-wrapper {
+  margin-bottom: 1em;
+}
+
+.card {
+  height: 100%;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
 }
 
 /* Footer */

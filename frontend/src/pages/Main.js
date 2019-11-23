@@ -1,22 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Bestsellers from '../components/Bestsellers';
+import CatalogComponent from '../components/CatalogComponent';
 
 const Main = props => {
+
   return (
     <>
     <Bestsellers />
-
-      <section className="catalog">
-          <h2 className="text-center">Каталог</h2>
-
-          <div className="preloader">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-          </div>
-      </section>
+    <CatalogComponent />
     </>
   );
 };
