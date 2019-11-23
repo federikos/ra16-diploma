@@ -43,7 +43,7 @@ const CatalogComponent = ({search}) => {
             }
             setItems(res);
         })
-  }, [categoryId]);
+  }, [categoryId, inputValue]);
 
   const handleLoadMore = () => {
     fetchItems(setLoadig, categoryId, items.length, inputValue)
