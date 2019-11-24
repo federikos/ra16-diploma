@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Cards from '../Cards';
-import PropTypes from 'prop-types';
 import Categories from './Categories';
+import PropTypes from 'prop-types';
 
 const getFetchUrl = (id, offset, q) => {
     let fetchUrl = `${process.env.REACT_APP_BASE_URL}items?offset=${offset}`;

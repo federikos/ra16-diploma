@@ -7,6 +7,7 @@ import Cart from '../pages/Cart';
 import Catalog from '../pages/Catalog';
 import Contacts from '../pages/Contacts';
 import Main from '../pages/Main';
+import Product from '../pages/Product';
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
             </Route>
             <Route exact path='/cart'>
               <Cart />
+            </Route>
+            <Route exact path='/catalog/:id'>
+              <Product />
             </Route>
             <Route exact path='/catalog'>
               <Catalog />
