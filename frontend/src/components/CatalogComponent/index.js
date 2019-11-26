@@ -1,77 +1,31 @@
 import React, {useState, useEffect} from 'react';
 import Cards from '../Cards';
 import Categories from './Categories';
+import Search from './Search';
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchProducts} from '../../actions/actionCreators';
 import PropTypes from 'prop-types';
 
-const getFetchUrl = (id, offset, q) => {
-    let fetchUrl = `${process.env.REACT_APP_BASE_URL}items?offset=${offset}`;
-
-    if (id) {
-        fetchUrl += `&categoryId=${id}`
-    }
-
-    if (q) {
-        fetchUrl += `&q=${q}`
-    }
-
-  return fetchUrl
-}
-
-const fetchItems = (setLoading, id, offset, q) => {
-    setLoading(true);
-    const fetchUrl = getFetchUrl(id, offset, q);
-    return fetch(fetchUrl)
-      .then(res => res.json())
-      .then(res => res)
-      .finally(() => setLoading(false));
-  }
-
 const CatalogComponent = ({search}) => {
-  const [categoryId, setCategoryId] = useState(null);
-  const [loading, setLoadig] = useState(false);
-  const [items, setItems] = useState([]);
-  const [loadBtnVisible, setLoadBtnVisible] = useState(true);
-  const [inputValue, setInputValue] = useState('');
+  const {items, loading, error, loadBtnVisible} = useSelector(state => state.productsList);
+  const {searchString} = useSelector(state => state.search);
+  const dispatch = useDispatch();
+  const {categoryId} = useSelector(state => state.categoriesList);
+
 
   useEffect(() => {
-    setLoadBtnVisible(true);
-
-    fetchItems(setLoadig, categoryId, 0, inputValue)
-        .then(async res => {
-            if (!res.length || res.length < 6) {
-                setLoadBtnVisible(false);
-            }
-            setItems(res);
-        })
-  }, [categoryId, inputValue]);
+    dispatch(fetchProducts(categoryId, 0, searchString));
+  }, [categoryId, searchString]);
 
   const handleLoadMore = () => {
-    fetchItems(setLoadig, categoryId, items.length, inputValue)
-    .then(res => {
-        if (!res.length || res.length < 6) {
-            setLoadBtnVisible(false);
-        }
-        setItems(prevItems => [...prevItems, ...res]);
-    });
-  }
-
-  const handleInputChange = e => {
-      setInputValue(e.target.value);
+    dispatch(fetchProducts(categoryId, items.length, searchString));
   }
 
   return (
     <section className="catalog">
         <h2 className="text-center">Каталог</h2>
-
-        {
-          search
-          &&
-          <form className="catalog-search-form form-inline">
-            <input className="form-control" placeholder="Поиск" value={inputValue} onChange={handleInputChange} />
-          </form>
-        }
-
-        <Categories setLoading={setLoadig} categoryId={categoryId} setCategoryId={setCategoryId} />
+        <Search search={search} />
+        <Categories />
         <Cards loading={loading} items={items} isCatalog />
         {
             loadBtnVisible

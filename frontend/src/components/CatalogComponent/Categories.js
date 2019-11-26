@@ -1,30 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
+import {useSelector, useDispatch} from 'react-redux';
+import {showLoadBtn, fetchCategories, setCategoryId} from '../../actions/actionCreators';
 
-const fetchCategories = (setLoading) => {
-  setLoading(true);
-
-  return fetch(`${process.env.REACT_APP_BASE_URL}categories`)
-    .then(res => res.json())
-    .then(res => res)
-    .finally(() => setLoading(false));
-}
-
-const Categories = ({setLoading, categoryId, setCategoryId}) => {
-  const [categories, setCategories] = useState([]);
-  const [activeCategory, setActiveCategory] = useState({});
+const Categories = () => {
+  const dispatch = useDispatch();
+  const {items, categoryId} = useSelector(state => state.categoriesList);
 
   useEffect(() => {
-    fetchCategories(setLoading)
-      .then(res => {
-        setCategories(res);
-      })
+    dispatch(fetchCategories());
   }, []);
 
   const handleClick = (e, id) => {
     e.preventDefault();
-    setCategoryId(id);
+    dispatch(showLoadBtn());
+    dispatch(setCategoryId(id));
   }
   return (
     <ul className="catalog-categories nav justify-content-center">
@@ -32,7 +22,7 @@ const Categories = ({setLoading, categoryId, setCategoryId}) => {
           <a className={clsx("nav-link", categoryId === null && 'active')} href="#" onClick={e => handleClick(e, null)}>Все</a>
       </li>
       {
-        categories.map(category => {
+        items.map(category => {
           return (
             <li key={category.id} className="nav-item">
               <a className={clsx("nav-link", categoryId === category.id && 'active')} href="#" onClick={e => handleClick(e, category.id)}>{category.title}</a>
@@ -42,10 +32,6 @@ const Categories = ({setLoading, categoryId, setCategoryId}) => {
       }
     </ul>
   );
-};
-
-Categories.propTypes = {
-  
 };
 
 export default Categories;
