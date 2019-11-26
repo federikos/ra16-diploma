@@ -1,16 +1,29 @@
 import React, {useState} from 'react';
 import {NavLink, useHistory} from 'react-router-dom';
+import headerLogo from '../../img/header-logo.png';
 import clsx from 'clsx';
-import headerLogo from '../img/header-logo.png';
 import PropTypes from 'prop-types';
-import NavbarMain from './NavbarMain';
+import NavbarMain from '../NavbarMain';
+import HeaderSearch from './HeaderSearch';
+import {useDispatch} from 'react-redux';
+import {setSearchValue} from '../../actions/actionCreators';
 
 const Header = props => {
+  const dispatch = useDispatch();
   const history = useHistory();
-  const [searchInvisible, setSearchInvisible] = useState(true);
   const handleCartClick = () => history.push('/cart');
+  const [searchInvisible, setSearchInvisible] = useState(true);
+  const [inputValue, setInputValue] = useState('');
+
   const handleSearchClick = () => {
-    setSearchInvisible(prevState => !prevState);
+    if (!inputValue) {
+        setSearchInvisible(prevState => !prevState);
+        return;
+    }
+    dispatch(setSearchValue(inputValue));
+    setInputValue('');
+    setSearchInvisible(true);
+    history.push('/catalog')
   };
 
   return (
@@ -33,8 +46,9 @@ const Header = props => {
                                     <div className="header-controls-cart-menu"></div>
                                 </div>
                             </div>
-                            <form data-id="search-form" className={clsx("header-controls-search-form", "form-inline", searchInvisible && "invisible")}>
-                                <input className="form-control" placeholder="Поиск" />
+                            {/* <HeaderSearch searchInvisible={searchInvisible} /> */}
+                            <form data-id="search-form" className={clsx("header-controls-search-form", "form-inline", searchInvisible && "invisible")} onSubmit={e => e.preventDefault()}>
+                                <input className="form-control" placeholder="Поиск" value={inputValue} onChange={e => setInputValue(e.target.value)} />
                             </form>
                         </div>
                     </div>

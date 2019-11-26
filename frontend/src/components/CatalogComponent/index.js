@@ -3,7 +3,7 @@ import Cards from '../Cards';
 import Categories from './Categories';
 import Search from './Search';
 import {useSelector, useDispatch} from 'react-redux';
-import {fetchProducts} from '../../actions/actionCreators';
+import {fetchProducts, setSearchValue} from '../../actions/actionCreators';
 import PropTypes from 'prop-types';
 
 const CatalogComponent = ({search}) => {
@@ -12,6 +12,10 @@ const CatalogComponent = ({search}) => {
   const dispatch = useDispatch();
   const {categoryId} = useSelector(state => state.categoriesList);
 
+  useEffect(() => {
+    //при отключении компонента очищаем строку поиска, чтобы на главной отображались все товары
+    return () => dispatch(setSearchValue(''));
+  }, []);
 
   useEffect(() => {
     dispatch(fetchProducts(categoryId, 0, searchString));

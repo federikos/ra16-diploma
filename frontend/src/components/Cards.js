@@ -1,5 +1,5 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 
@@ -34,7 +34,7 @@ const Cards = ({loading, items, isCatalog}) => {
                     <div className="card-body">
                       <p className="card-text">{item.title}</p>
                       <p className="card-text">{formatPrice(item.price)}</p>
-                      <a href="/products/1.html" className="btn btn-outline-primary">Заказать</a>
+                      <Link to={`catalog/${item.id}`} className="btn btn-outline-primary">Заказать</Link>
                     </div>
                   </div>
                 </div>

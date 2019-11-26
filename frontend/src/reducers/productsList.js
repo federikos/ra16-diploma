@@ -42,7 +42,7 @@ export default function productsListReducer(state = initialState, action) {
       const {moreItems} = action.payload;
       return {
         ...state,
-        items: [...state.items, ...moreItems],
+        items: state.items.concat(moreItems),
         loading: false,
         error: null,
       };
