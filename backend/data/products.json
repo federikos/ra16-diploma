@@ -1650,7 +1650,7 @@
             },
             {
                 "size": "18 US",
-                "avalible": false
+                "avalible": true
             }
         ]
     },
@@ -1673,7 +1673,7 @@
         "sizes": [
             {
                 "size": "12 US",
-                "avalible": true
+                "avalible": false
             },
             {
                 "size": "18 US",

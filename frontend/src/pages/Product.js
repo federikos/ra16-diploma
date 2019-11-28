@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {withRouter, useHistory} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 import clsx from 'clsx';
+import {setCartItemsCount} from '../actions/actionCreators';
 import PropTypes from 'prop-types';
 
 
@@ -16,6 +18,8 @@ const fetchProduct = (setLoading, id) => {
 const Product = ({match}) => {
   const {id} = match.params;
   const history = useHistory();
+  const dispatch = useDispatch();
+  const {cartItemsCount} = useSelector(state => state.cart);
   
   const [loading, setLoadig] = useState(false);
   const [product, setProduct] = useState({});
@@ -33,6 +37,31 @@ const Product = ({match}) => {
   }
 
   const addToCart = () => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const foundItem = cart.find(item => item.id === product.id && item.size === selectedSize);
+    
+    if (!foundItem) {
+      localStorage.setItem('cart', JSON.stringify(cart.concat({
+        id: product.id,
+        title: product.title,
+        size: selectedSize,
+        price: product.price,
+        total: product.price * selectedQuantity,
+        count: selectedQuantity,
+      })));
+      dispatch(setCartItemsCount(cartItemsCount + 1));
+    }
+
+    if(foundItem) {
+      const filteredCart = cart.filter(item => !(item.id === product.id && item.size === selectedSize));
+      localStorage.setItem('cart', JSON.stringify(filteredCart.concat({
+        ...foundItem,
+        count: foundItem.count + selectedQuantity,
+        price: product.price,
+        total: foundItem.total + product.price * selectedQuantity,
+      })));
+    }
+
     history.push('/cart');
   };
 
@@ -44,6 +73,8 @@ const Product = ({match}) => {
   if (!Object.keys(product).length) {
     return null;
   }
+
+  const avalibleSizes = product.sizes.filter(size => size.avalible);
 
   return (
     <section className="catalog-item">
@@ -58,57 +89,64 @@ const Product = ({match}) => {
                 <tbody>
                     <tr>
                         <td>Артикул</td>
-                        <td>{product.sku}</td>
+                        <td>{product.sku || null}</td>
                     </tr>
                     <tr>
                         <td>Производитель</td>
-                        <td>{product.manufacturer}</td>
+                        <td>{product.manufacturer || null}</td>
                     </tr>
                     <tr>
                         <td>Цвет</td>
-                        <td>{product.color}</td>
+                        <td>{product.color || null}</td>
                     </tr>
                     <tr>
                         <td>Материалы</td>
-                        <td>{product.material}</td>
+                        <td>{product.material || null}</td>
                     </tr>
                     <tr>
                         <td>Сезон</td>
-                        <td>{product.season}</td>
+                        <td>{product.season || null}</td>
                     </tr>
                     <tr>
                         <td>Повод</td>
-                        <td>{product.reason}</td>
+                        <td>{product.reason || null}</td>
                     </tr>
                 </tbody>
             </table>
-            <div className="text-center">
-                <p>Размеры в наличии: 
-                  {
-                    product.sizes
-                      .filter(size => size.avalible)
-                      .map(size => {
-                        return (
-                          <React.Fragment key={size.size}>
-                            &nbsp;<span
-                            className={clsx("catalog-item-size", selectedSize === size.size && "selected")}
-                            onClick={() => setSelectedSize(size.size)}
-                            >
-                              {size.size}
-                            </span>
-                          </React.Fragment>
-                        )
-                      })
-                  }
-                </p>
-                <p>Количество: <span className="btn-group btn-group-sm pl-2">
-                        <button className="btn btn-secondary" data-type='decrease' onClick={changeQuantity} disabled={selectedQuantity < 2}>-</button>
-                        <span className="btn btn-outline-primary">{selectedQuantity}</span>
-                        <button className="btn btn-secondary" data-type='increase' onClick={changeQuantity} disabled={selectedQuantity > 9}>+</button>
+            {
+              avalibleSizes.length
+              ?
+              <>
+                <div className="text-center">
+                  <p>Размеры в наличии: 
+                    {
+                      avalibleSizes
+                        .map(size => {
+                          return (
+                            <React.Fragment key={size.size}>
+                              &nbsp;<span
+                              className={clsx("catalog-item-size", selectedSize === size.size && "selected")}
+                              onClick={() => setSelectedSize(size.size)}
+                              >
+                                {size.size}
+                              </span>
+                            </React.Fragment>
+                          )
+                        })
+                    }
+                  </p>
+                  <p>Количество: <span className="btn-group btn-group-sm pl-2">
+                    <button className="btn btn-secondary" data-type='decrease' onClick={changeQuantity} disabled={selectedQuantity < 2}>-</button>
+                    <span className="btn btn-outline-primary">{selectedQuantity}</span>
+                    <button className="btn btn-secondary" data-type='increase' onClick={changeQuantity} disabled={selectedQuantity > 9}>+</button>
                     </span>
-                </p>
-            </div>
-            <button className="btn btn-danger btn-block btn-lg" onClick={addToCart}>В корзину</button>
+                  </p>
+                </div>
+                <button className="btn btn-danger btn-block btn-lg" disabled={!Boolean(selectedSize)} onClick={addToCart}>В корзину</button>
+              </>
+              : <p>Нет в наличии</p>
+            }
+
         </div>
       </div>
     </section>

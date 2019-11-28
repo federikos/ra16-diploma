@@ -1,9 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import clsx from 'clsx';
+import {formatPrice} from '../helpers/index';
 import PropTypes from 'prop-types';
-
-const formatPrice = (price) => `${price.toFixed(0)} руб.`;
 
 const Cards = ({loading, items, isCatalog}) => {
   return (

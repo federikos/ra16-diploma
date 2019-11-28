@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Layout from '../components/Layout';
 import NotFound from '../pages/404';
@@ -8,8 +9,17 @@ import Catalog from '../pages/Catalog';
 import Contacts from '../pages/Contacts';
 import Main from '../pages/Main';
 import Product from '../pages/Product';
+import {setCartItemsCount} from '../actions/actionCreators';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    const cartItemsCount = cart ? cart.length : 0;
+    dispatch(setCartItemsCount(cartItemsCount));
+  }, []);
+
   return (
     <div className="App">
       <Router>

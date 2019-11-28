@@ -5,11 +5,12 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import NavbarMain from '../NavbarMain';
 import HeaderSearch from './HeaderSearch';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setSearchValue} from '../../actions/actionCreators';
 
 const Header = props => {
   const dispatch = useDispatch();
+  const {cartItemsCount} = useSelector(state => state.cart);
   const history = useHistory();
   const handleCartClick = () => history.push('/cart');
   const [searchInvisible, setSearchInvisible] = useState(true);
@@ -42,7 +43,9 @@ const Header = props => {
                                 <div data-id="search-expander" className="header-controls-pic header-controls-search" onClick={handleSearchClick}></div>
                                 {/* Do programmatic navigation on click to /cart */}
                                 <div className="header-controls-pic header-controls-cart" onClick={handleCartClick}>
-                                    <div className="header-controls-cart-full">1</div>
+                                    {
+                                        cartItemsCount ? <div className="header-controls-cart-full">{cartItemsCount}</div> : null
+                                    }
                                     <div className="header-controls-cart-menu"></div>
                                 </div>
                             </div>

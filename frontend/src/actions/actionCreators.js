@@ -10,6 +10,7 @@ import {
   SET_CATEGORY_ID,
   SET_SEARCH_STRING,
   CLEAR_SEARCH_STRING,
+  SET_CART_ITEMS_COUNT,
 } from './actionTypes';
 
 export const fetchProductsRequest =() => ({
@@ -62,6 +63,13 @@ export const setCategoryId = id => ({
     categoryId: id,
   }
 });
+
+export const setCartItemsCount = count => ({
+  type: SET_CART_ITEMS_COUNT,
+  payload: {
+    itemsCount: count,
+  }
+})
 
 export const setSearchValue = searchString => ({
   type: SET_SEARCH_STRING,

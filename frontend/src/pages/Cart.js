@@ -1,7 +1,31 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
+import {formatPrice} from '../helpers';
+import {useDispatch} from 'react-redux';
+import {setCartItemsCount} from '../actions/actionCreators';
 import PropTypes from 'prop-types';
 
 const Cart = props => {
+  const [items, setItems] = useState([]);
+  const dispatch = useDispatch()
+  useEffect(() => {
+    setItems(JSON.parse(localStorage.getItem('cart')) || []);
+  }, []);
+
+//   useEffect(() => {
+//       console.log(items)
+//       console.log(Array.isArray(items))
+//   }, [items])
+
+  const handleDelete = (id, size) => () => {
+      const newItems = items.filter(item =>  !(item.id === id && item.size === size));
+      setItems(newItems);
+      localStorage.setItem('cart', JSON.stringify(newItems));
+      dispatch(setCartItemsCount(newItems.length));
+  };
+
+  const totalAmount = items.reduce((acc, item) => acc + item.total, 0);
+
   return (
     <>
       <section className="cart">
@@ -19,18 +43,24 @@ const Cart = props => {
                   </tr>
               </thead>
               <tbody>
-                  <tr>
-                      <th scope="row">1</th>
-                      <td><a href="/products/1.html">Босоножки 'MYER'</a></td>
-                      <td>18 US</td>
-                      <td>1</td>
-                      <td>34 000 руб.</td>
-                      <td>34 000 руб.</td>
-                      <td><button className="btn btn-outline-danger btn-sm">Удалить</button></td>
-                  </tr>
+                  {
+                      items.map((item, i) => {
+                          return (
+                            <tr key={item.id}>
+                                <th scope="row">{i + 1}</th>
+                                <td><Link to={`/catalog/${item.id}`}>{item.title}</Link></td>
+                                <td>{item.size}</td>
+                                <td>{item.count}</td>
+                                <td>{formatPrice(item.price)}</td>
+                                <td>{formatPrice(item.total)}</td>
+                                <td><button className="btn btn-outline-danger btn-sm" onClick={handleDelete(item.id, item.size)}>Удалить</button></td>
+                            </tr>
+                          )
+                      })
+                  }
                   <tr>
                       <td colSpan="5" className="text-right">Общая стоимость</td>
-                      <td>34 000 руб.</td>
+                      <td>{formatPrice(totalAmount)}</td>
                   </tr>
               </tbody>
           </table>
