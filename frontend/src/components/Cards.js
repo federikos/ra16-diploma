@@ -18,7 +18,6 @@ const Cards = ({loading, items, isCatalog}) => {
         </div>
       }
 
-      { !loading &&
         <div className="row">
           {
             items.map(item => {
@@ -41,7 +40,6 @@ const Cards = ({loading, items, isCatalog}) => {
             })
           }
         </div>
-      }
     </>
   );
 };

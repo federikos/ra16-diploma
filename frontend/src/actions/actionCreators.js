@@ -11,6 +11,11 @@ import {
   SET_SEARCH_STRING,
   CLEAR_SEARCH_STRING,
   REPLACE_CART_ITEMS,
+  SEND_ORDER_REQUEST,
+  SEND_ORDER_SUCCESS,
+  SEND_ORDER_ERROR,
+  CHANGE_FORM_INPUT,
+  CLEAR_FORM
 } from './actionTypes';
 
 export const fetchProductsRequest =() => ({
@@ -77,6 +82,58 @@ export const replaceCartItems = items => ({
     items,
   }
 })
+
+export const sendOrderRequest = () => ({
+  type: SEND_ORDER_REQUEST
+})
+
+export const sendOrderSuccess = () => ({
+  type: SEND_ORDER_SUCCESS
+})
+
+export const sendOrderError = error => ({
+  type: SEND_ORDER_ERROR,
+  payload: {
+    error
+  }
+})
+
+export const changeFormInput = (name, value) => ({
+  type: CHANGE_FORM_INPUT,
+  payload: {name, value}
+})
+
+export const clearForm = () => ({
+  type: CLEAR_FORM,
+})
+
+export const sendOrder = (items, form) => dispatch => {
+  dispatch(sendOrderRequest());
+  const orderData = items.map(item => {
+    return {id: item.id, price: item.price, count: item.count}
+  });
+  fetch(`${process.env.REACT_APP_BASE_URL}order`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      owner: {
+        phone: form.phone,
+        address: form.address,
+      },
+      items: orderData
+    })
+  })
+    .then(res => {
+      if (res.status === 204) {
+        dispatch(clearForm())
+        dispatch(setCartItems([]));
+        dispatch(sendOrderSuccess())
+      }
+    })
+    .catch(error => dispatch(sendOrderError(error)))
+}
 
 export const setCartItems = items => dispatch => {
   dispatch(replaceCartItems(items));

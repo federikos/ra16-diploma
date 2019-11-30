@@ -1,55 +1,26 @@
-import React, {useState} from 'react';
-import {setCartItems} from '../actions/actionCreators';
+import React from 'react';
+import {sendOrder, changeFormInput} from '../actions/actionCreators';
 import {useDispatch, useSelector} from 'react-redux';
-import PropTypes from 'prop-types';
-
-const initialForm = {
-  phone: '',
-  address: '',
-  isAgree: false
-}
 
 const OrderForm = props => {
   const {items} = useSelector(state => state.cartItems);
+  const {form, loading, message} = useSelector(state => state.cartForm);
   const dispatch = useDispatch();
-  const [form, setForm] = useState({...initialForm});
 
   const handleChange = e => {
-    const {id: name, value} = e.target;
+    const {id: name, value} = e.currentTarget;
     if (name === 'agreement') {
-      setForm({...form, isAgree: !form.isAgree});
+      dispatch(changeFormInput(name, !form.agreement))
       return;
     }
-    setForm({...form, [name]: value})
+    dispatch(changeFormInput(name, value))
   }
 
-  const isOrderBtnDisabled = !(form.isAgree && form.phone && form.address);
+  const isOrderBtnDisabled = !(form.agreement && form.phone && form.address && items.length);
 
   const handleSubmit = e => {
+    dispatch(sendOrder(items, form));
     e.preventDefault();
-    const orderData = items.map(item => {
-      return {id: item.id, price: item.price, count: item.count}
-    });
-    fetch(`${process.env.REACT_APP_BASE_URL}order`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        owner: {
-          phone: form.phone,
-          address: form.address,
-        },
-        items: orderData
-      })
-    })
-      .then(res => {
-        if (res.status === 204) {
-          setForm({...initialForm});
-          localStorage.removeItem('cart');
-          dispatch(setCartItems([]));
-        }
-      })
   }
 
   return (
@@ -66,7 +37,7 @@ const OrderForm = props => {
                   <input className="form-control" id="address" placeholder="Адрес доставки" value={form.address} onChange={handleChange} />
               </div>
               <div className="form-group form-check">
-                  <input type="checkbox" className="form-check-input" id="agreement" value={form.isAgree} onChange={handleChange} />
+                  <input type="checkbox" className="form-check-input" id="agreement" checked={form.agreement} onChange={handleChange} />
                   <label className="form-check-label" htmlFor="agreement">Согласен с правилами доставки</label>
               </div>
               <button type="submit" className="btn btn-outline-secondary" disabled={isOrderBtnDisabled}>Оформить</button>
@@ -75,10 +46,6 @@ const OrderForm = props => {
       </div>
     </section>
   );
-};
-
-OrderForm.propTypes = {
-  
 };
 
 export default OrderForm;

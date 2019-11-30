@@ -32,11 +32,11 @@ const CatalogComponent = ({search}) => {
         <Categories />
         <Cards loading={loading} items={items} isCatalog />
         {
-            loadBtnVisible
-            &&
-            <div className="text-center">
-                <button className="btn btn-outline-primary" onClick={handleLoadMore}>Загрузить ещё</button>
-            </div>
+          loadBtnVisible
+          &&
+          <div className="text-center">
+              <button className="btn btn-outline-primary" onClick={handleLoadMore}>Загрузить ещё</button>
+          </div>
         }
     </section>
   );

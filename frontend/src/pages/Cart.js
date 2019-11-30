@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import {formatPrice} from '../helpers';
 import {useDispatch, useSelector} from 'react-redux';
 import {setCartItems} from '../actions/actionCreators';
-import PropTypes from 'prop-types';
 import OrderForm from '../components/OrderForm';
 
 const Cart = props => {
@@ -24,13 +23,12 @@ const Cart = props => {
           <table className="table table-bordered">
               <thead>
                   <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Название</th>
-                      <th scope="col">Размер</th>
-                      <th scope="col">Кол-во</th>
-                      <th scope="col">Стоимость</th>
-                      <th scope="col">Итого</th>
-                      <th scope="col">Действия</th>
+                      {
+                          ['#', 'Название', 'Размер', 'Кол-во', 'Стоимость', 'Итого', 'Действия']
+                            .map((columnHeader, i) => (
+                                <th key={i} scope="col">{columnHeader}</th>
+                            ))
+                      }
                   </tr>
               </thead>
               <tbody>
@@ -44,7 +42,13 @@ const Cart = props => {
                                 <td>{item.count}</td>
                                 <td>{formatPrice(item.price)}</td>
                                 <td>{formatPrice(item.total)}</td>
-                                <td><button className="btn btn-outline-danger btn-sm" onClick={handleDelete(item.id, item.size)}>Удалить</button></td>
+                                <td>
+                                    <button 
+                                    className="btn btn-outline-danger btn-sm" 
+                                    onClick={handleDelete(item.id, item.size)}>
+                                        Удалить
+                                    </button>
+                                </td>
                             </tr>
                           )
                       })
@@ -59,10 +63,6 @@ const Cart = props => {
       <OrderForm />
     </>
   );
-};
-
-Cart.propTypes = {
-  
 };
 
 export default Cart;
