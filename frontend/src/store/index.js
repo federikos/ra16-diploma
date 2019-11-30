@@ -8,13 +8,13 @@ import thunk from 'redux-thunk';
 import productsListReducer from '../reducers/productsList';
 import categoriesListReducer from '../reducers/categoriesList';
 import searchReducer from '../reducers/search';
-import cartReducer from '../reducers/cart';
+import cartItemsReducer from '../reducers/cartItems';
 
 const reducer = combineReducers({
   productsList: productsListReducer,
   categoriesList: categoriesListReducer,
   search: searchReducer,
-  cart: cartReducer,
+  cartItems: cartItemsReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -9,15 +9,13 @@ import Catalog from '../pages/Catalog';
 import Contacts from '../pages/Contacts';
 import Main from '../pages/Main';
 import Product from '../pages/Product';
-import {setCartItemsCount} from '../actions/actionCreators';
+import {restoreCartFromLS} from '../actions/actionCreators';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem('cart'));
-    const cartItemsCount = cart ? cart.length : 0;
-    dispatch(setCartItemsCount(cartItemsCount));
+    dispatch(restoreCartFromLS());
   }, []);
 
   return (

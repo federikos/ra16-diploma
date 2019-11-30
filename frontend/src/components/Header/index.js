@@ -10,7 +10,7 @@ import {setSearchValue} from '../../actions/actionCreators';
 
 const Header = props => {
   const dispatch = useDispatch();
-  const {cartItemsCount} = useSelector(state => state.cart);
+  const {cartItemsCount} = useSelector(state => state.cartItems);
   const history = useHistory();
   const handleCartClick = () => history.push('/cart');
   const [searchInvisible, setSearchInvisible] = useState(true);

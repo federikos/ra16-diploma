@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {withRouter, useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import clsx from 'clsx';
-import {setCartItemsCount} from '../actions/actionCreators';
+import {setCartItems} from '../actions/actionCreators';
 import PropTypes from 'prop-types';
 
 
@@ -19,7 +19,7 @@ const Product = ({match}) => {
   const {id} = match.params;
   const history = useHistory();
   const dispatch = useDispatch();
-  const {cartItemsCount} = useSelector(state => state.cart);
+  const {items} = useSelector(state => state.cartItems);
   
   const [loading, setLoadig] = useState(false);
   const [product, setProduct] = useState({});
@@ -37,31 +37,36 @@ const Product = ({match}) => {
   }
 
   const addToCart = () => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const foundItem = cart.find(item => item.id === product.id && item.size === selectedSize);
+    const foundItem = items.find(item => item.id === product.id && item.size === selectedSize);
+    let newItems = [...items.map(item => {
+      return {...item}
+    })];
+    let newItem;
     
     if (!foundItem) {
-      localStorage.setItem('cart', JSON.stringify(cart.concat({
+      newItem = {
         id: product.id,
         title: product.title,
         size: selectedSize,
         price: product.price,
         total: product.price * selectedQuantity,
         count: selectedQuantity,
-      })));
-      dispatch(setCartItemsCount(cartItemsCount + 1));
+      };
     }
 
     if(foundItem) {
-      const filteredCart = cart.filter(item => !(item.id === product.id && item.size === selectedSize));
-      localStorage.setItem('cart', JSON.stringify(filteredCart.concat({
+      newItem = {
         ...foundItem,
         count: foundItem.count + selectedQuantity,
         price: product.price,
         total: foundItem.total + product.price * selectedQuantity,
-      })));
+      };
+
+      newItems = items.filter(item => !(item.id === product.id && item.size === selectedSize));
     }
 
+    newItems = newItems.concat(newItem)
+    dispatch(setCartItems(newItems));
     history.push('/cart');
   };
 

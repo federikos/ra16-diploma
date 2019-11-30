@@ -10,7 +10,7 @@ import {
   SET_CATEGORY_ID,
   SET_SEARCH_STRING,
   CLEAR_SEARCH_STRING,
-  SET_CART_ITEMS_COUNT,
+  REPLACE_CART_ITEMS,
 } from './actionTypes';
 
 export const fetchProductsRequest =() => ({
@@ -64,19 +64,31 @@ export const setCategoryId = id => ({
   }
 });
 
-export const setCartItemsCount = count => ({
-  type: SET_CART_ITEMS_COUNT,
-  payload: {
-    itemsCount: count,
-  }
-})
-
 export const setSearchValue = searchString => ({
   type: SET_SEARCH_STRING,
   payload: {
     searchString
   }
 })
+
+export const replaceCartItems = items => ({
+  type: REPLACE_CART_ITEMS,
+  payload: {
+    items,
+  }
+})
+
+export const setCartItems = items => dispatch => {
+  dispatch(replaceCartItems(items));
+  localStorage.setItem('cart', JSON.stringify(items));
+}
+
+export const restoreCartFromLS = () => dispatch => {
+  const items = JSON.parse(localStorage.getItem('cart'));
+  if(items) {
+    dispatch(replaceCartItems(items));
+  }
+}
 
 export const fetchProducts = (id, offset, q) => async (dispatch) => {
   dispatch(fetchProductsRequest());
