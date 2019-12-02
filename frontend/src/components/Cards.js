@@ -2,22 +2,12 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import clsx from 'clsx';
 import {formatPrice} from '../helpers/index';
+import Loader from './Loader';
 import PropTypes from 'prop-types';
 
 const Cards = ({loading, items, isCatalog}) => {
   return (
     <>
-      {
-        loading 
-        &&
-        <div className="preloader">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      }
-
         <div className="row">
           {
             items.map(item => {
@@ -40,6 +30,7 @@ const Cards = ({loading, items, isCatalog}) => {
             })
           }
         </div>
+        <Loader loading={loading} />
     </>
   );
 };

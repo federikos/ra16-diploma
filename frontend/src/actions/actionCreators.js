@@ -3,8 +3,11 @@ import {
   FETCH_PRODUCTS_FAILURE,
   FETCH_PRODUCTS_SUCCESS_FIRST,
   FETCH_PRODUCTS_SUCCESS_MORE,
+  CLEAR_PRODUCTS,
   SHOW_LOAD_BUTTON,
   HIDE_LOAD_BUTTON,
+  FETCH_CATEGORIES_REQUEST,
+  FETCH_CATEGORIES_FAILURE,
   FETCH_CATEGORIES_SUCCESS,
   SET_LOADING_FALSE,
   SET_CATEGORY_ID,
@@ -15,8 +18,9 @@ import {
   SEND_ORDER_SUCCESS,
   SEND_ORDER_ERROR,
   CHANGE_FORM_INPUT,
-  CLEAR_FORM
+  CLEAR_FORM,
 } from './actionTypes';
+import {getProductsUrl} from '../helpers';
 
 export const fetchProductsRequest =() => ({
   type: FETCH_PRODUCTS_REQUEST,
@@ -43,12 +47,27 @@ export const fetchProductsSuccessMore = items => ({
   },
 });
 
+export const clearProducts = () => ({
+  type: CLEAR_PRODUCTS,
+})
+
 export const showLoadBtn = () => ({
   type: SHOW_LOAD_BUTTON,
 });
 
 export const hideLoadBtn = () => ({
   type: HIDE_LOAD_BUTTON,
+});
+
+export const fetchCategoriesRequest =() => ({
+  type: FETCH_CATEGORIES_REQUEST,
+});
+
+export const fetchCategoriesFailure = error => ({
+  type: FETCH_CATEGORIES_FAILURE,
+  payload: {
+    error,
+  },
 });
 
 export const fetchCategoriesSuccess = items => ({
@@ -147,17 +166,28 @@ export const restoreCartFromLS = () => dispatch => {
   }
 }
 
-export const fetchProducts = (id, offset, q) => async (dispatch) => {
+export const fetchProducts = (offset) => async (dispatch, getState) => {
+  const {search: {searchString}, categoriesList: {categoryId}} = getState()
   dispatch(fetchProductsRequest());
-  const fetchUrl = getProductsUrl(id, offset, q);
+  dispatch(hideLoadBtn());
+
+  if (!offset) {
+    dispatch(clearProducts());
+  }
+
+  const fetchUrl = getProductsUrl(categoryId, offset, searchString);
 
   try {
-    const response = await fetch(fetchUrl);
+    const response = await fetch(fetchUrl, {headers: {
+      'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    }});
 
     const data = await response.json();
-    if (!data.length || data.length < 6) {
-      dispatch(hideLoadBtn());
+
+    if (data.length && data.length === 6) {
+      dispatch(showLoadBtn());
     }
+
     if (offset === 0) {
       dispatch(fetchProductsSuccessFirst(data));
     }
@@ -170,30 +200,19 @@ export const fetchProducts = (id, offset, q) => async (dispatch) => {
 };
 
 export const fetchCategories = () => async (dispatch) => {
-  dispatch(fetchProductsRequest());
+  dispatch(fetchCategoriesRequest());
 
   try {
     const response = await fetch(`${process.env.REACT_APP_BASE_URL}categories`);
 
     const data = await response.json();
-      dispatch(fetchCategoriesSuccess(data));
-      dispatch(setProductsLoadingFalse());
+    dispatch(fetchCategoriesSuccess(data));
   } catch (error) {
-    dispatch(fetchProductsFailure(error.message));
+    dispatch(fetchCategoriesFailure(error.message));
   }
 };
 
-const getProductsUrl = (id, offset, q) => {
-  let fetchUrl = `${process.env.REACT_APP_BASE_URL}items?offset=${offset}`;
-
-  if (id) {
-      fetchUrl += `&categoryId=${id}`
-  }
-
-  if (q) {
-      fetchUrl += `&q=${q}`
-  }
-
-return fetchUrl
+export const searchProducts = searchString => async dispatch => {
+  dispatch(setSearchValue(searchString));
+  dispatch(fetchProducts(0));
 }
-

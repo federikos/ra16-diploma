@@ -99,6 +99,7 @@ section {
 /* Banner */
 .banner {
   position: relative;
+  height: 357px;
 }
 
 .banner-header {

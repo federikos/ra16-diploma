@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {setSearchValue} from '../../actions/actionCreators';
+import {searchProducts} from '../../actions/actionCreators';
 import PropTypes from 'prop-types';
 
 const Search = ({search}) => {
@@ -8,7 +8,7 @@ const Search = ({search}) => {
   const {searchString} = useSelector(state => state.search);
 
   const handleInputChange = e => {
-    dispatch(setSearchValue(e.target.value));
+    dispatch(searchProducts(e.target.value))
   }
 
   if (!search) return null;

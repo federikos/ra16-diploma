@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import NavbarMain from '../NavbarMain';
 import HeaderSearch from './HeaderSearch';
 import {useDispatch, useSelector} from 'react-redux';
-import {setSearchValue} from '../../actions/actionCreators';
+import {searchProducts} from '../../actions/actionCreators';
 
 const Header = props => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const Header = props => {
         setSearchInvisible(prevState => !prevState);
         return;
     }
-    dispatch(setSearchValue(inputValue));
+    dispatch(searchProducts(inputValue));
     setInputValue('');
     setSearchInvisible(true);
     history.push('/catalog')

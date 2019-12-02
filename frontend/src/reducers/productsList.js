@@ -3,6 +3,7 @@ import {
   FETCH_PRODUCTS_FAILURE,
   FETCH_PRODUCTS_SUCCESS_FIRST,
   FETCH_PRODUCTS_SUCCESS_MORE,
+  CLEAR_PRODUCTS,
   SHOW_LOAD_BUTTON,
   HIDE_LOAD_BUTTON,
   SET_LOADING_FALSE,
@@ -46,6 +47,12 @@ export default function productsListReducer(state = initialState, action) {
         loading: false,
         error: null,
       };
+    case CLEAR_PRODUCTS:
+      console.log('products cleared')
+      return {
+        ...state,
+        items: []
+      }
     case SHOW_LOAD_BUTTON:
       return {
         ...state,
