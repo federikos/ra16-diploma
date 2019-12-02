@@ -4,14 +4,24 @@ import {useDispatch, useSelector} from 'react-redux';
 import clsx from 'clsx';
 import {setCartItems} from '../actions/actionCreators';
 import PropTypes from 'prop-types';
+import ProductTable from '../components/ProductTable';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
 
 
-const fetchProduct = (setLoading, id) => {
+const fetchProduct = (setLoading, setError, history, id) => {
   setLoading(true);
 
   return fetch(`${process.env.REACT_APP_BASE_URL}items/${id}`)
-    .then(res => res.json())
+    .then(res => {
+      if (res.status === 404) {
+        history.push('/404');
+        return;
+      }
+      return res.json()
+    })
     .then(res => res)
+    .catch(error => setError(error.message))
     .finally(() => setLoading(false))
 }
 
@@ -21,7 +31,8 @@ const Product = ({match}) => {
   const dispatch = useDispatch();
   const {items} = useSelector(state => state.cartItems);
   
-  const [loading, setLoadig] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [product, setProduct] = useState({});
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedQuantity, setSelectedQuantity] = useState(1);
@@ -71,9 +82,17 @@ const Product = ({match}) => {
   };
 
   useEffect(() => {
-    fetchProduct(setLoadig, id)
+    fetchProduct(setLoading, setError, history, id)
       .then(res => setProduct(res));
   }, [id]);
+
+  if (loading) {
+    return <Loader loading={true} />
+  }
+
+  if (error) {
+    return <Message type='error' message={error} />
+  }
 
   if (!Object.keys(product).length) {
     return null;
@@ -90,34 +109,7 @@ const Product = ({match}) => {
                 className="img-fluid" alt={product.title} />
         </div>
         <div className="col-7">
-            <table className="table table-bordered">
-                <tbody>
-                    <tr>
-                        <td>Артикул</td>
-                        <td>{product.sku || null}</td>
-                    </tr>
-                    <tr>
-                        <td>Производитель</td>
-                        <td>{product.manufacturer || null}</td>
-                    </tr>
-                    <tr>
-                        <td>Цвет</td>
-                        <td>{product.color || null}</td>
-                    </tr>
-                    <tr>
-                        <td>Материалы</td>
-                        <td>{product.material || null}</td>
-                    </tr>
-                    <tr>
-                        <td>Сезон</td>
-                        <td>{product.season || null}</td>
-                    </tr>
-                    <tr>
-                        <td>Повод</td>
-                        <td>{product.reason || null}</td>
-                    </tr>
-                </tbody>
-            </table>
+          <ProductTable product={product} />
             {
               avalibleSizes.length
               ?

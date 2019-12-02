@@ -31,6 +31,21 @@ section {
   opacity: 0;
 }
 
+.message {
+  text-align: center;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid gray;
+}
+
+.message.error {
+  border: 2px solid crimson;
+}
+
+.message.success {
+  border: 2px solid lightgreen;
+}
+
 /* Header */
 .header-controls-pics {
   display: flex;

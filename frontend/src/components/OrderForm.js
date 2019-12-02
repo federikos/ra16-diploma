@@ -1,4 +1,6 @@
 import React from 'react';
+import Loader from './Loader';
+import Message from './Message';
 import {sendOrder, changeFormInput} from '../actions/actionCreators';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -23,6 +25,7 @@ const OrderForm = props => {
     e.preventDefault();
   }
 
+
   return (
     <section className="order">
       <h2 className="text-center">Оформить заказ</h2>
@@ -42,7 +45,10 @@ const OrderForm = props => {
               </div>
               <button type="submit" className="btn btn-outline-secondary" disabled={isOrderBtnDisabled}>Оформить</button>
           </form>
-
+        <Loader loading={loading}/>
+        {
+          message && <Message type={message.type} message={message.message} />
+        }
       </div>
     </section>
   );

@@ -14,19 +14,18 @@ const fetchBestsellers = (setLoading) => {
 const Bestsellers = props => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    fetchBestsellers(setLoading).then(res => setItems(res))
+    fetchBestsellers(setLoading)
+      .then(res => setItems(res))
+      .catch(error => setError(error.message))
   }, []);
-
-  if (!items.length && !loading) {
-    return null;
-  }
 
   return (
     <section className="top-sales">
       <h2 className="text-center">Хиты продаж!</h2>
-      <Cards loading={loading} items={items} />
+      <Cards loading={loading} error={error} items={items} />
     </section>
   );
 };

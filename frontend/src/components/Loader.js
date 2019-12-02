@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const withSection = ({loading}) => {
+const Loader = ({loading}) => {
+  console.log('Loader loading', loading)
   if (!loading) return null;
+  
   return (
     <div className="preloader">
       <span></span>
@@ -13,8 +15,8 @@ const withSection = ({loading}) => {
   );
 };
 
-withSection.propTypes = {
+Loader.propTypes = {
   loading: PropTypes.bool.isRequired,
 };
 
-export default withSection;
+export default Loader;

@@ -43,14 +43,20 @@ export default function searchReducer(state = initialState, action) {
     case SEND_ORDER_SUCCESS:
       return {
         ...initialState,
-        message: 'Ваш заказ отправлен'
+        message: {
+          type: 'success',
+          message: 'Ваш заказ отправлен',
+        }
       }
     case SEND_ORDER_ERROR:
       const {error} = action.payload;
       return {
         ...state,
         loading: false,
-        message: error
+        message: {
+          type: 'error',
+          message: error
+        }
       }
     default:
       return state;

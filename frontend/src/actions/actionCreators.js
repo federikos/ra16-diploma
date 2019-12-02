@@ -196,6 +196,7 @@ export const fetchProducts = (offset) => async (dispatch, getState) => {
     }
   } catch (error) {
     dispatch(fetchProductsFailure(error.message));
+    dispatch(showLoadBtn());
   }
 };
 

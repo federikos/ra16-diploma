@@ -10,6 +10,7 @@ const LoadBtn = ({items}) => {
   }
 
   if (!loadBtnVisible) return null;
+  
   return (
     <div className="text-center">
         <button className="btn btn-outline-primary" onClick={handleLoadMore}>Загрузить ещё</button>

@@ -48,7 +48,6 @@ export default function productsListReducer(state = initialState, action) {
         error: null,
       };
     case CLEAR_PRODUCTS:
-      console.log('products cleared')
       return {
         ...state,
         items: []

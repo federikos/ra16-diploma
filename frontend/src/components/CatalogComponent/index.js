@@ -11,7 +11,7 @@ import LoadBtn from './LoadBtn';
 
 const CatalogComponent = ({match}) => {
   const dispatch = useDispatch();
-  const {items, loading: cardsLoading} = useSelector(state => state.productsList);
+  const {items, loading: cardsLoading, error} = useSelector(state => state.productsList);
   const {loading: categoriesLoading} = useSelector(state => state.categoriesList);
   const isCatalogPage = match.path === '/catalog';
 
@@ -43,7 +43,7 @@ const CatalogComponent = ({match}) => {
             !catalogLoading &&
               <>
               <Categories />
-              <Cards loading={cardsLoading} items={items} isCatalog />
+              <Cards loading={cardsLoading} error={error} items={items} isCatalog />
               <LoadBtn items={items} />
             </>
           }

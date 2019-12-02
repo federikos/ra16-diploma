@@ -3,9 +3,10 @@ import {Link} from 'react-router-dom';
 import clsx from 'clsx';
 import {formatPrice} from '../helpers/index';
 import Loader from './Loader';
+import Message from './Message';
 import PropTypes from 'prop-types';
 
-const Cards = ({loading, items, isCatalog}) => {
+const Cards = ({items, isCatalog, loading, error}) => {
   return (
     <>
         <div className="row">
@@ -30,6 +31,7 @@ const Cards = ({loading, items, isCatalog}) => {
             })
           }
         </div>
+        <Message type='error' message={error} />
         <Loader loading={loading} />
     </>
   );
