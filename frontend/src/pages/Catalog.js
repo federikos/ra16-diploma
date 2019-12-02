@@ -4,7 +4,7 @@ import CatalogComponent from '../components/CatalogComponent';
 
 const Catalog = props => {
   return (
-      <CatalogComponent search />
+      <CatalogComponent />
   );
 };
 

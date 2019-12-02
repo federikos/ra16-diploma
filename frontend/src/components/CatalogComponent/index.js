@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
+import {withRouter} from 'react-router-dom';
 import Cards from '../Cards';
 import Categories from './Categories';
 import Search from './Search';
@@ -6,47 +7,44 @@ import {useSelector, useDispatch} from 'react-redux';
 import {fetchProducts, setSearchValue, setCategoryId, fetchCategories} from '../../actions/actionCreators';
 import Loader from '../Loader';
 import PropTypes from 'prop-types';
+import LoadBtn from './LoadBtn';
 
-const CatalogComponent = ({search}) => {
-  const {items, loading: cardsLoading, error, loadBtnVisible} = useSelector(state => state.productsList);
-  const {loading: categoriesLoading} = useSelector(state => state.categoriesList);
-  const {searchString} = useSelector(state => state.search);
+const CatalogComponent = ({match}) => {
   const dispatch = useDispatch();
-  const {categoryId} = useSelector(state => state.categoriesList);
+  const {items, loading: cardsLoading} = useSelector(state => state.productsList);
+  const {loading: categoriesLoading} = useSelector(state => state.categoriesList);
+  const isCatalogPage = match.path === '/catalog';
 
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchProducts(0));
-    //при отключении компонента сбрасываем строку поиска и категорию, чтобы на главной отображались все товары
+
+    //При отключении компонента сбрасываем строку поиска и категорию для каталога, 
+    //чтобы при смене страницы отображались все товары
+    //Чтобы не сломать поиск при переходе из Header'а, строку поиска обнуляем
+    //только если он расположен на странице Каталог
+
     return () => {
-      dispatch(setSearchValue(''));
+      if (isCatalogPage) {
+        dispatch(setSearchValue(''));
+      }
       dispatch(setCategoryId(null))
     };
   }, []);
 
-  const handleLoadMore = () => {
-    dispatch(fetchProducts(items.length));
-  }
-
-  //пока оба компонента (карточки товаров и категории) не загрузились - отображаем общий лоадер на уровне каталога.
+  //пока оба компонента (карточки товаров и категории) не загрузились - отображаем общий лоадер для всего каталога.
   const catalogLoading = cardsLoading && categoriesLoading;
 
   return (
     <section className="catalog">
         <h2 className="text-center">Каталог</h2>
-          <Search search={search} />
+        <Search isVisible={isCatalogPage} />
           {
             !catalogLoading &&
               <>
               <Categories />
               <Cards loading={cardsLoading} items={items} isCatalog />
-              {
-                loadBtnVisible
-                &&
-                <div className="text-center">
-                    <button className="btn btn-outline-primary" onClick={handleLoadMore}>Загрузить ещё</button>
-                </div>
-              }
+              <LoadBtn items={items} />
             </>
           }
         <Loader loading={catalogLoading} />
@@ -55,7 +53,7 @@ const CatalogComponent = ({search}) => {
 };
 
 CatalogComponent.propTypes = {
-  
+  match: PropTypes.object.isRequired,
 };
 
-export default CatalogComponent;
+export default withRouter(CatalogComponent);

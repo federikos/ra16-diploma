@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {searchProducts} from '../../actions/actionCreators';
 import PropTypes from 'prop-types';
 
-const Search = ({search}) => {
+const Search = ({isVisible}) => {
   const dispatch = useDispatch();
   const {searchString} = useSelector(state => state.search);
 
@@ -11,7 +11,7 @@ const Search = ({search}) => {
     dispatch(searchProducts(e.target.value))
   }
 
-  if (!search) return null;
+  if (!isVisible) return null;
 
   return (
     <form className="catalog-search-form form-inline">
@@ -21,7 +21,7 @@ const Search = ({search}) => {
 };
 
 Search.propTypes = {
-  search: PropTypes.bool,
+  isVisible: PropTypes.bool,
 };
 
 export default Search;
