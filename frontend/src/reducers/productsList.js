@@ -4,8 +4,6 @@ import {
   FETCH_PRODUCTS_SUCCESS_FIRST,
   FETCH_PRODUCTS_SUCCESS_MORE,
   CLEAR_PRODUCTS,
-  SHOW_LOAD_BUTTON,
-  HIDE_LOAD_BUTTON,
   SET_LOADING_FALSE,
 } from '../actions/actionTypes'
 
@@ -13,7 +11,6 @@ const initialState = {
   items: [],
   loading: false,
   error: null,
-  loadBtnVisible: true,
 };
 
 export default function productsListReducer(state = initialState, action) {
@@ -51,16 +48,6 @@ export default function productsListReducer(state = initialState, action) {
       return {
         ...state,
         items: []
-      }
-    case SHOW_LOAD_BUTTON:
-      return {
-        ...state,
-        loadBtnVisible: true,
-      };
-    case HIDE_LOAD_BUTTON:
-      return {
-        ...state,
-        loadBtnVisible: false,
       };
     case SET_LOADING_FALSE:
       return {

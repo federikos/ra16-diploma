@@ -4,8 +4,6 @@ import {
   FETCH_PRODUCTS_SUCCESS_FIRST,
   FETCH_PRODUCTS_SUCCESS_MORE,
   CLEAR_PRODUCTS,
-  SHOW_LOAD_BUTTON,
-  HIDE_LOAD_BUTTON,
   FETCH_CATEGORIES_REQUEST,
   FETCH_CATEGORIES_FAILURE,
   FETCH_CATEGORIES_SUCCESS,
@@ -49,14 +47,6 @@ export const fetchProductsSuccessMore = items => ({
 
 export const clearProducts = () => ({
   type: CLEAR_PRODUCTS,
-})
-
-export const showLoadBtn = () => ({
-  type: SHOW_LOAD_BUTTON,
-});
-
-export const hideLoadBtn = () => ({
-  type: HIDE_LOAD_BUTTON,
 });
 
 export const fetchCategoriesRequest =() => ({
@@ -145,7 +135,7 @@ export const sendOrder = (items, form) => dispatch => {
     })
   })
     .then(res => {
-      if (res.status === 204) {
+      if (res.status >= 200 && res.status < 300) {
         dispatch(clearForm())
         dispatch(setCartItems([]));
         dispatch(sendOrderSuccess())
@@ -169,7 +159,6 @@ export const restoreCartFromLS = () => dispatch => {
 export const fetchProducts = (offset) => async (dispatch, getState) => {
   const {search: {searchString}, categoriesList: {categoryId}} = getState()
   dispatch(fetchProductsRequest());
-  dispatch(hideLoadBtn());
 
   if (!offset) {
     dispatch(clearProducts());
@@ -184,10 +173,6 @@ export const fetchProducts = (offset) => async (dispatch, getState) => {
 
     const data = await response.json();
 
-    if (data.length && data.length === 6) {
-      dispatch(showLoadBtn());
-    }
-
     if (offset === 0) {
       dispatch(fetchProductsSuccessFirst(data));
     }
@@ -196,7 +181,6 @@ export const fetchProducts = (offset) => async (dispatch, getState) => {
     }
   } catch (error) {
     dispatch(fetchProductsFailure(error.message));
-    dispatch(showLoadBtn());
   }
 };
 
