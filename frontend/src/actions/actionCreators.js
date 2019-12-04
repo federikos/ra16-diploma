@@ -22,7 +22,7 @@ import {
   FETCH_PRODUCT_FAILURE,
   FETCH_PRODUCT_SUCCESS,
 } from './actionTypes';
-import {getProductsUrl} from '../helpers';
+import debounce from 'lodash/debounce'
 
 export const fetchProductsRequest =() => ({
   type: FETCH_PRODUCTS_REQUEST,
@@ -179,7 +179,7 @@ export const restoreCartFromLS = () => dispatch => {
 }
 
 export const fetchProducts = (offset) => async (dispatch, getState) => {
-  const {search: {query}, categoriesList: {categoryId}} = getState()
+  const {productsList: {query}, categoriesList: {categoryId}} = getState()
   dispatch(fetchProductsRequest());
 
   if (!offset) {
@@ -220,11 +220,6 @@ export const fetchCategories = () => async (dispatch) => {
   }
 };
 
-export const searchProducts = query => async dispatch => {
-  dispatch(setSearchValue(query));
-  dispatch(fetchProducts(0));
-}
-
 export const fetchProduct = (history, id) => async dispatch => {
   dispatch(fetchProductRequest());
 
@@ -238,4 +233,12 @@ export const fetchProduct = (history, id) => async dispatch => {
     })
     .then(res => dispatch(fetchProductSuccess(res)))
     .catch(error => dispatch(fetchProductFailure(error.message)))
+}
+
+const debouncedFetch = debounce((dispatch) => dispatch(fetchProducts(0)), 500)
+
+export const searchProducts = query => async dispatch => {
+  dispatch(setSearchValue(query));
+
+  debouncedFetch(dispatch);
 }

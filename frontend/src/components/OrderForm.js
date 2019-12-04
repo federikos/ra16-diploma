@@ -5,9 +5,9 @@ import {sendOrder, changeFormInput} from '../actions/actionCreators';
 import {useDispatch, useSelector} from 'react-redux';
 import { cartItemsSelector, cartFormSelector } from '../selectors';
 
-const OrderForm = props => {
+const OrderForm = () => {
   const {items} = useSelector(cartItemsSelector);
-  const {form, loading, message} = useSelector(cartFormSelector);
+  const {form, loading, error, success} = useSelector(cartFormSelector);
   const dispatch = useDispatch();
 
   const handleChange = e => {
@@ -47,9 +47,8 @@ const OrderForm = props => {
               <button type="submit" className="btn btn-outline-secondary" disabled={isOrderBtnDisabled}>Оформить</button>
           </form>
         <Loader loading={loading}/>
-        {
-          message && <Message type={message.type} message={message.message} />
-        }
+        <Message type='error' message={error} />
+        <Message type='success' message={success && 'Ваш заказ отправлен'} />
       </div>
     </section>
   );

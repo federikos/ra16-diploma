@@ -5,10 +5,13 @@ import {
   FETCH_PRODUCTS_SUCCESS_MORE,
   CLEAR_PRODUCTS,
   SET_LOADING_FALSE,
+  SET_SEARCH_STRING,
+  CLEAR_SEARCH_STRING,
 } from '../actions/actionTypes'
 
 const initialState = {
   items: [],
+  query: '',
   loading: false,
   error: null,
 };
@@ -54,6 +57,17 @@ export default function productsListReducer(state = initialState, action) {
         ...state,
         loading: false,
       }
+    case SET_SEARCH_STRING:
+      const {query} = action.payload;
+      return {
+        ...state,
+        query,
+      };
+    case CLEAR_SEARCH_STRING:
+      return {
+        ...state,
+        query: initialState.query,
+      };
     default:
       return state;
   }
