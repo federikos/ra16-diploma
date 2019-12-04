@@ -1,13 +1,14 @@
 import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import {useSelector, useDispatch} from 'react-redux';
-import {showLoadBtn, fetchCategories, setCategoryId, fetchProducts, clearProducts} from '../../actions/actionCreators';
+import {categoriesListSelector} from '../../selectors';
+import {fetchCategories, setCategoryId, fetchProducts, clearProducts} from '../../actions/actionCreators';
 import Message from '../Message';
 import Loader from '../Loader';
 
 const Categories = () => {
   const dispatch = useDispatch();
-  const {items, categoryId, loading, error} = useSelector(state => state.categoriesList);
+  const {items, categoryId, loading, error} = useSelector(categoriesListSelector);
   const itemsWithAll = [{title: 'Все', id: null}].concat(items);
 
   const handleClick = (e, id) => {

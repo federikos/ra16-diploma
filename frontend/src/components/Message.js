@@ -11,7 +11,7 @@ const Message = ({type, message}) => {
 
 Message.propTypes = {
   type: PropTypes.oneOf(['error', 'success']).isRequired,
-  message: PropTypes.string.isRequired,
+  message: PropTypes.string,
 };
 
 export default Message;

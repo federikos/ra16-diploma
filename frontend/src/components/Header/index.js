@@ -7,10 +7,11 @@ import NavbarMain from '../NavbarMain';
 import HeaderSearch from './HeaderSearch';
 import {useDispatch, useSelector} from 'react-redux';
 import {searchProducts} from '../../actions/actionCreators';
+import { cartItemsSelector } from '../../selectors';
 
 const Header = props => {
   const dispatch = useDispatch();
-  const {cartItemsCount} = useSelector(state => state.cartItems);
+  const {cartItemsCount} = useSelector(cartItemsSelector);
   const history = useHistory();
   const handleCartClick = () => history.push('/cart');
   const [searchInvisible, setSearchInvisible] = useState(true);

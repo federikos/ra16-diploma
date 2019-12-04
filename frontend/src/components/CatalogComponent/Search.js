@@ -1,11 +1,12 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {searchSelector} from '../../selectors';
 import {searchProducts} from '../../actions/actionCreators';
 import PropTypes from 'prop-types';
 
 const Search = ({isVisible}) => {
   const dispatch = useDispatch();
-  const {searchString} = useSelector(state => state.search);
+  const {query} = useSelector(searchSelector);
 
   const handleInputChange = e => {
     dispatch(searchProducts(e.target.value))
@@ -15,7 +16,7 @@ const Search = ({isVisible}) => {
 
   return (
     <form className="catalog-search-form form-inline">
-      <input className="form-control" placeholder="Поиск" value={searchString} onChange={handleInputChange} />
+      <input className="form-control" placeholder="Поиск" value={query} onChange={handleInputChange} />
     </form>
   );
 };

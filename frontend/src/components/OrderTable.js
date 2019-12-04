@@ -3,9 +3,10 @@ import {Link} from 'react-router-dom';
 import {formatPrice} from '../helpers';
 import {useDispatch, useSelector} from 'react-redux';
 import {setCartItems} from '../actions/actionCreators';
+import { cartItemsSelector } from '../selectors';
 
 const OrderTable = () => {
-  const {items} = useSelector(state => state.cartItems);
+  const {items} = useSelector(cartItemsSelector);
   const dispatch = useDispatch()
 
   const handleDelete = (id, size) => () => {

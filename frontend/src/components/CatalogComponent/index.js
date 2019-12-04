@@ -4,6 +4,7 @@ import Cards from '../Cards';
 import Categories from './Categories';
 import Search from './Search';
 import {useSelector, useDispatch} from 'react-redux';
+import {categoriesListSelector, productsListSelector} from '../../selectors';
 import {fetchProducts, setSearchValue, setCategoryId, fetchCategories} from '../../actions/actionCreators';
 import Loader from '../Loader';
 import PropTypes from 'prop-types';
@@ -11,8 +12,8 @@ import LoadBtn from './LoadBtn';
 
 const CatalogComponent = ({match}) => {
   const dispatch = useDispatch();
-  const {items, loading: cardsLoading, error} = useSelector(state => state.productsList);
-  const {loading: categoriesLoading} = useSelector(state => state.categoriesList);
+  const {items, loading: cardsLoading, error} = useSelector(productsListSelector);
+  const {loading: categoriesLoading} = useSelector(categoriesListSelector);
   const isCatalogPage = match.path === '/catalog';
 
   useEffect(() => {

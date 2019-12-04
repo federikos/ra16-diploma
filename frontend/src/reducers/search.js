@@ -4,21 +4,21 @@ import {
 } from '../actions/actionTypes'
 
 const initialState = {
-  searchString: '',
+  query: '',
 };
 
 export default function searchReducer(state = initialState, action) {
   switch (action.type) {
     case SET_SEARCH_STRING:
-      const {searchString} = action.payload;
+      const {query} = action.payload;
       return {
         ...state,
-        searchString,
+        query,
       };
     case CLEAR_SEARCH_STRING:
       return {
         ...state,
-        searchString: initialState.searchString,
+        query: initialState.query,
       };
     default:
       return state;

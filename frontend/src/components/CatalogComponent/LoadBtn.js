@@ -1,10 +1,11 @@
 import React from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import {productsListSelector} from '../../selectors';
 import {fetchProducts} from '../../actions/actionCreators';
 
 const LoadBtn = ({items}) => {
   const dispatch = useDispatch();
-  const {loading} = useSelector(state => state.productsList);
+  const {loading} = useSelector(productsListSelector);
   const loadBtnVisible = !loading && (items.length % 6 === 0);
   const handleLoadMore = () => {
     dispatch(fetchProducts(items.length));

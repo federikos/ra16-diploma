@@ -2,38 +2,19 @@ import React, {useEffect, useState} from 'react';
 import {withRouter, useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import clsx from 'clsx';
-import {setCartItems} from '../actions/actionCreators';
+import {setCartItems, fetchProduct} from '../actions/actionCreators';
 import PropTypes from 'prop-types';
 import ProductTable from '../components/ProductTable';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-
-
-const fetchProduct = (setLoading, setError, history, id) => {
-  setLoading(true);
-
-  return fetch(`${process.env.REACT_APP_BASE_URL}items/${id}`)
-    .then(res => {
-      if (res.status === 404) {
-        history.push('/404');
-        return;
-      }
-      return res.json()
-    })
-    .then(res => res)
-    .catch(error => setError(error.message))
-    .finally(() => setLoading(false))
-}
+import { cartItemsSelector, productSelector } from '../selectors';
 
 const Product = ({match}) => {
   const {id} = match.params;
   const history = useHistory();
   const dispatch = useDispatch();
-  const {items} = useSelector(state => state.cartItems);
-  
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [product, setProduct] = useState({});
+  const {items} = useSelector(cartItemsSelector);
+  const {product, loading, error} = useSelector(productSelector);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
@@ -82,8 +63,7 @@ const Product = ({match}) => {
   };
 
   useEffect(() => {
-    fetchProduct(setLoading, setError, history, id)
-      .then(res => setProduct(res));
+    dispatch(fetchProduct(history, id));
   }, [id]);
 
   if (loading) {

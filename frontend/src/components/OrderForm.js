@@ -3,10 +3,11 @@ import Loader from './Loader';
 import Message from './Message';
 import {sendOrder, changeFormInput} from '../actions/actionCreators';
 import {useDispatch, useSelector} from 'react-redux';
+import { cartItemsSelector, cartFormSelector } from '../selectors';
 
 const OrderForm = props => {
-  const {items} = useSelector(state => state.cartItems);
-  const {form, loading, message} = useSelector(state => state.cartForm);
+  const {items} = useSelector(cartItemsSelector);
+  const {form, loading, message} = useSelector(cartFormSelector);
   const dispatch = useDispatch();
 
   const handleChange = e => {

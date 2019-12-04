@@ -1,3 +1,4 @@
+import queryString from 'query-string';
 import {
   FETCH_PRODUCTS_REQUEST,
   FETCH_PRODUCTS_FAILURE,
@@ -17,6 +18,9 @@ import {
   SEND_ORDER_ERROR,
   CHANGE_FORM_INPUT,
   CLEAR_FORM,
+  FETCH_PRODUCT_REQUEST,
+  FETCH_PRODUCT_FAILURE,
+  FETCH_PRODUCT_SUCCESS,
 } from './actionTypes';
 import {getProductsUrl} from '../helpers';
 
@@ -78,10 +82,10 @@ export const setCategoryId = id => ({
   }
 });
 
-export const setSearchValue = searchString => ({
+export const setSearchValue = query => ({
   type: SET_SEARCH_STRING,
   payload: {
-    searchString
+    query
   }
 })
 
@@ -91,6 +95,24 @@ export const replaceCartItems = items => ({
     items,
   }
 })
+
+export const fetchProductRequest =() => ({
+  type: FETCH_PRODUCT_REQUEST,
+});
+
+export const fetchProductFailure = error => ({
+  type: FETCH_PRODUCT_FAILURE,
+  payload: {
+    error,
+  },
+});
+
+export const fetchProductSuccess = product => ({
+  type: FETCH_PRODUCT_SUCCESS,
+  payload: {
+    product,
+  },
+});
 
 export const sendOrderRequest = () => ({
   type: SEND_ORDER_REQUEST
@@ -157,14 +179,15 @@ export const restoreCartFromLS = () => dispatch => {
 }
 
 export const fetchProducts = (offset) => async (dispatch, getState) => {
-  const {search: {searchString}, categoriesList: {categoryId}} = getState()
+  const {search: {query}, categoriesList: {categoryId}} = getState()
   dispatch(fetchProductsRequest());
 
   if (!offset) {
     dispatch(clearProducts());
   }
 
-  const fetchUrl = getProductsUrl(categoryId, offset, searchString);
+  const params = queryString.stringify({offset, categoryId, q: query});
+  let fetchUrl = `${process.env.REACT_APP_BASE_URL}items?${params}`;
 
   try {
     const response = await fetch(fetchUrl, {headers: {
@@ -197,7 +220,22 @@ export const fetchCategories = () => async (dispatch) => {
   }
 };
 
-export const searchProducts = searchString => async dispatch => {
-  dispatch(setSearchValue(searchString));
+export const searchProducts = query => async dispatch => {
+  dispatch(setSearchValue(query));
   dispatch(fetchProducts(0));
+}
+
+export const fetchProduct = (history, id) => async dispatch => {
+  dispatch(fetchProductRequest());
+
+  return fetch(`${process.env.REACT_APP_BASE_URL}items/${id}`)
+    .then(res => {
+      if (res.status === 404) {
+        history.push('/404');
+        return;
+      }
+      return res.json()
+    })
+    .then(res => dispatch(fetchProductSuccess(res)))
+    .catch(error => dispatch(fetchProductFailure(error.message)))
 }
