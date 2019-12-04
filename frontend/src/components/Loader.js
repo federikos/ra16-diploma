@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Loader = ({loading}) => {
-  console.log('Loader loading', loading)
   if (!loading) return null;
   
   return (
