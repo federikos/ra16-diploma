@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Loader = ({loading}) => {
+const Loader = ({ loading }) => {
   if (!loading) return null;
-  
+
   return (
     <div className="preloader">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
+      <span />
+      <span />
+      <span />
+      <span />
     </div>
   );
 };

@@ -1,7 +1,9 @@
-import React, {useEffect} from 'react';
-import {useDispatch} from 'react-redux';
-import {BrowserRouter as Router, Route, Redirect, Switch} from 'react-router-dom';
-import Layout from '../components/Layout';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import {
+  BrowserRouter as Router, Route, Redirect, Switch,
+} from 'react-router-dom';
+import Layout from './Layout';
 import NotFound from '../pages/404';
 import About from '../pages/About';
 import Cart from '../pages/Cart';
@@ -9,7 +11,7 @@ import Catalog from '../pages/Catalog';
 import Contacts from '../pages/Contacts';
 import Main from '../pages/Main';
 import Product from '../pages/Product';
-import {restoreCartFromLS} from '../actions/actionCreators';
+import { restoreCartFromLS } from '../actions/actionCreators';
 
 function App() {
   const dispatch = useDispatch();
@@ -23,25 +25,25 @@ function App() {
       <Router>
         <Layout>
           <Switch>
-            <Route exact path='/about'>
+            <Route exact path="/about">
               <About />
             </Route>
-            <Route exact path='/cart'>
+            <Route exact path="/cart">
               <Cart />
             </Route>
-            <Route exact path='/catalog/:id'>
+            <Route exact path="/catalog/:id">
               <Product />
             </Route>
-            <Route exact path='/catalog'>
+            <Route exact path="/catalog">
               <Catalog />
             </Route>
-            <Route exact path='/contacts'>
+            <Route exact path="/contacts">
               <Contacts />
             </Route>
-            <Route exact path='/'>
+            <Route exact path="/">
               <Main />
             </Route>
-            <Route exact path='/404'>
+            <Route exact path="/404">
               <NotFound />
             </Route>
             <Route path="*">

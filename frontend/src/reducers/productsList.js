@@ -6,8 +6,7 @@ import {
   CLEAR_PRODUCTS,
   SET_LOADING_FALSE,
   SET_SEARCH_STRING,
-  CLEAR_SEARCH_STRING,
-} from '../actions/actionTypes'
+} from '../actions/actionTypes';
 
 const initialState = {
   items: [],
@@ -25,14 +24,14 @@ export default function productsListReducer(state = initialState, action) {
         error: null,
       };
     case FETCH_PRODUCTS_FAILURE:
-      const {error} = action.payload;
+      const { error } = action.payload;
       return {
         ...state,
         loading: false,
         error,
       };
     case FETCH_PRODUCTS_SUCCESS_FIRST:
-      const {items} = action.payload;
+      const { items } = action.payload;
       return {
         ...state,
         items,
@@ -40,7 +39,7 @@ export default function productsListReducer(state = initialState, action) {
         error: null,
       };
     case FETCH_PRODUCTS_SUCCESS_MORE:
-      const {moreItems} = action.payload;
+      const { moreItems } = action.payload;
       return {
         ...state,
         items: state.items.concat(moreItems),
@@ -50,23 +49,18 @@ export default function productsListReducer(state = initialState, action) {
     case CLEAR_PRODUCTS:
       return {
         ...state,
-        items: []
+        items: [],
       };
     case SET_LOADING_FALSE:
       return {
         ...state,
         loading: false,
-      }
+      };
     case SET_SEARCH_STRING:
-      const {query} = action.payload;
+      const { query } = action.payload;
       return {
         ...state,
         query,
-      };
-    case CLEAR_SEARCH_STRING:
-      return {
-        ...state,
-        query: initialState.query,
       };
     default:
       return state;

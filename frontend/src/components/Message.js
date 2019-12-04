@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 
-const Message = ({type, message}) => {
+const Message = ({ type, message }) => {
   if (!message) return null;
   return (
     <p className={clsx('message', type)}>{message}</p>

@@ -1,16 +1,16 @@
 import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {productsListSelector} from '../../selectors';
-import {searchProducts} from '../../actions/actionCreators';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { productsListSelector } from '../../selectors';
+import { searchProducts } from '../../actions/actionCreators';
 
-const Search = ({isVisible}) => {
+const Search = ({ isVisible }) => {
   const dispatch = useDispatch();
-  const {query} = useSelector(productsListSelector);
+  const { query } = useSelector(productsListSelector);
 
-  const handleInputChange = e => {
-    dispatch(searchProducts(e.target.value))
-  }
+  const handleInputChange = (e) => {
+    dispatch(searchProducts(e.target.value));
+  };
 
   if (!isVisible) return null;
 

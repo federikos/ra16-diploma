@@ -1,24 +1,24 @@
 import React from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 
 const links = [
   {
     title: 'Главная',
-    to: '/'
+    to: '/',
   },
   {
     title: 'Каталог',
-    to: '/catalog'
+    to: '/catalog',
   },
   {
     title: 'О магазине',
-    to: '/about'
+    to: '/about',
   },
   {
     title: 'Контакты',
-    to: '/contacts'
+    to: '/contacts',
   },
 ];
 
@@ -27,26 +27,22 @@ function isActive(location, to) {
   return location.pathname === to;
 }
 
-const NavbarMain = props => {
-  return (
-    <ul className="navbar-nav mr-auto">
-      {
-        links.map((link, i) => {
-          return (
-            <li className={clsx("nav-item", isActive(props.location, link.to) && 'active')} key={i}>
-              <Link className="nav-link" to={link.to}>
-                {link.title}
-              </Link>
-            </li>
-          )
-        })
+const NavbarMain = (props) => (
+  <ul className="navbar-nav mr-auto">
+    {
+        links.map((link, i) => (
+          <li className={clsx('nav-item', isActive(props.location, link.to) && 'active')} key={i}>
+            <Link className="nav-link" to={link.to}>
+              {link.title}
+            </Link>
+          </li>
+        ))
       }
-    </ul>
-  );
-};
+  </ul>
+);
 
 NavbarMain.propTypes = {
-  
+
 };
 
 export default withRouter(NavbarMain);

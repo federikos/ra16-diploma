@@ -1,6 +1,6 @@
 import {
   REPLACE_CART_ITEMS,
-} from '../actions/actionTypes'
+} from '../actions/actionTypes';
 
 const initialState = {
   items: [],
@@ -10,18 +10,16 @@ const initialState = {
 export default function searchReducer(state = initialState, action) {
   switch (action.type) {
     case REPLACE_CART_ITEMS:
-      const {items} = action.payload;
+      const { items } = action.payload;
 
       let newItems = [];
       if (items.length) {
-        newItems = [...items.map(item => {
-          return {...item}
-        })]
+        newItems = [...items.map((item) => ({ ...item }))];
       }
       return {
         items: newItems,
         cartItemsCount: items.length,
-      }
+      };
     default:
       return state;
   }
