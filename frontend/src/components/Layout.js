@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import headerLogo from '../img/header-logo.png';
-import banner from '../img/banner.jpg';
 import Header from './Header';
 import Footer from './Footer';
 import Banner from './Banner';
@@ -21,8 +19,11 @@ const Layout = ({ children }) => (
   </>
 );
 
-Header.propTypes = {
-
+Layout.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };
 
 export default Layout;

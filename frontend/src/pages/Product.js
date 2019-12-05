@@ -82,7 +82,9 @@ const Product = ({ match }) => {
 };
 
 Product.propTypes = {
-  match: PropTypes.object.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape([]),
+  }).isRequired,
 };
 
 export default withRouter(Product);

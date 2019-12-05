@@ -9,7 +9,7 @@ const HeaderSearch = ({ searchInvisible }) => (
 );
 
 HeaderSearch.propTypes = {
-
+  searchInvisible: PropTypes.bool.isRequired,
 };
 
 export default HeaderSearch;

@@ -6,7 +6,16 @@ import Loader from './Loader';
 import Message from './Message';
 
 const ProductView = ({
-  loading, error, isProduct, product, avalibleSizes, selectedSize, setSelectedSize, changeQuantity, selectedQuantity, addToCart,
+  loading,
+  error,
+  isProduct,
+  product,
+  avalibleSizes,
+  selectedSize,
+  setSelectedSize,
+  changeQuantity,
+  selectedQuantity,
+  addToCart,
 }) => {
   if (loading) {
     return <Loader loading />;
@@ -33,43 +42,68 @@ const ProductView = ({
         </div>
         <div className="col-7">
           <ProductTable product={product} />
-          {
-              avalibleSizes.length
-                ? (
-                  <>
-                    <div className="text-center">
-                      <p>
-Размеры в наличии:
-                        {
-                      avalibleSizes
-                        .map((size) => (
-                          <React.Fragment key={size.size}>
-                              &nbsp;
-                            <span
-                              className={clsx('catalog-item-size', selectedSize === size.size && 'selected')}
-                              onClick={() => setSelectedSize(size.size)}
-                            >
-                              {size.size}
-                            </span>
-                          </React.Fragment>
-                        ))
-                    }
-                      </p>
-                      <p>
-Количество:
-                        <span className="btn-group btn-group-sm pl-2">
-                          <button className="btn btn-secondary" data-type="decrease" onClick={changeQuantity} disabled={selectedQuantity < 2}>-</button>
-                          <span className="btn btn-outline-primary">{selectedQuantity}</span>
-                          <button className="btn btn-secondary" data-type="increase" onClick={changeQuantity} disabled={selectedQuantity > 9}>+</button>
-                        </span>
-                      </p>
-                    </div>
-                    <button className="btn btn-danger btn-block btn-lg" disabled={!selectedSize} onClick={addToCart}>В корзину</button>
-                  </>
-                )
-                : <p>Нет в наличии</p>
-            }
-
+          {avalibleSizes.length ? (
+            <>
+              <div className="text-center">
+                <p>
+                  Размеры в наличии:
+                  {avalibleSizes.map((size) => (
+                    <React.Fragment key={size.size}>
+                      &nbsp;
+                      <span
+                        className={clsx(
+                          'catalog-item-size',
+                          selectedSize === size.size && 'selected',
+                        )}
+                        onClick={() => setSelectedSize(size.size)}
+                        role="radio"
+                        tabIndex={0}
+                        aria-checked={false}
+                      >
+                        {size.size}
+                      </span>
+                    </React.Fragment>
+                  ))}
+                </p>
+                <p>
+                  Количество:
+                  <span className="btn-group btn-group-sm pl-2">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-type="decrease"
+                      onClick={changeQuantity}
+                      disabled={selectedQuantity < 2}
+                    >
+                      -
+                    </button>
+                    <span className="btn btn-outline-primary">
+                      {selectedQuantity}
+                    </span>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-type="increase"
+                      onClick={changeQuantity}
+                      disabled={selectedQuantity > 9}
+                    >
+                      +
+                    </button>
+                  </span>
+                </p>
+              </div>
+              <button
+                type="submit"
+                className="btn btn-danger btn-block btn-lg"
+                disabled={!selectedSize}
+                onClick={addToCart}
+              >
+                В корзину
+              </button>
+            </>
+          ) : (
+            <p>Нет в наличии</p>
+          )}
         </div>
       </div>
     </section>
@@ -81,6 +115,10 @@ ProductView.propTypes = {
   error: PropTypes.string,
   isProduct: PropTypes.bool.isRequired,
   product: PropTypes.shape({
+    title: PropTypes.string,
+    images: PropTypes.arrayOf(
+      PropTypes.string,
+    ),
     sku: PropTypes.string,
     manufacturer: PropTypes.string,
     color: PropTypes.string,
@@ -88,12 +126,19 @@ ProductView.propTypes = {
     season: PropTypes.string,
     reason: PropTypes.string,
   }).isRequired,
-  avalibleSizes: PropTypes.array,
+  avalibleSizes: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  ),
   selectedSize: PropTypes.string.isRequired,
   setSelectedSize: PropTypes.func.isRequired,
   changeQuantity: PropTypes.func.isRequired,
   selectedQuantity: PropTypes.number.isRequired,
   addToCart: PropTypes.func.isRequired,
+};
+
+ProductView.defaultProps = {
+  avalibleSizes: [],
+  error: null,
 };
 
 export default ProductView;

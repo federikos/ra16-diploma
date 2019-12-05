@@ -21,5 +21,7 @@ module.exports = {
     'react',
   ],
   rules: {
+    "no-case-declarations": "off",
+    "react/jsx-filename-extension": "off"
   },
 };

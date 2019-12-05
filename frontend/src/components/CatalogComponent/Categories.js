@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { categoriesListSelector } from '../../selectors';
-import {
-  fetchCategories, setCategoryId, fetchProducts, clearProducts,
-} from '../../actions/actionCreators';
+import { setCategoryId, fetchProducts } from '../../actions/actionCreators';
 import Message from '../Message';
 import Loader from '../Loader';
 

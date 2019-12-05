@@ -35,7 +35,8 @@ const CatalogComponent = ({ match }) => {
     };
   }, []);
 
-  // пока оба компонента (карточки товаров и категории) не загрузились - отображаем общий лоадер для всего каталога.
+  // пока оба компонента (карточки товаров и категории) не загрузились -
+  // отображаем общий лоадер для всего каталога.
   const catalogLoading = cardsLoading && categoriesLoading;
 
   return (
@@ -58,7 +59,9 @@ const CatalogComponent = ({ match }) => {
 };
 
 CatalogComponent.propTypes = {
-  match: PropTypes.object.isRequired,
+  match: PropTypes.shape({
+    path: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default withRouter(CatalogComponent);

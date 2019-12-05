@@ -22,7 +22,7 @@ const Search = ({ isVisible }) => {
 };
 
 Search.propTypes = {
-  isVisible: PropTypes.bool,
+  isVisible: PropTypes.bool.isRequired,
 };
 
 export default Search;

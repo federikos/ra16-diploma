@@ -30,8 +30,8 @@ function isActive(location, to) {
 const NavbarMain = (props) => (
   <ul className="navbar-nav mr-auto">
     {
-        links.map((link, i) => (
-          <li className={clsx('nav-item', isActive(props.location, link.to) && 'active')} key={i}>
+        links.map((link) => (
+          <li className={clsx('nav-item', isActive(props.location, link.to) && 'active')} key={link.title}>
             <Link className="nav-link" to={link.to}>
               {link.title}
             </Link>
@@ -42,7 +42,9 @@ const NavbarMain = (props) => (
 );
 
 NavbarMain.propTypes = {
-
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
 };
 
 export default withRouter(NavbarMain);

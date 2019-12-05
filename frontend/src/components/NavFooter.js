@@ -23,11 +23,11 @@ function isActive(location, to) {
   return location.pathname === to;
 }
 
-const NavFooter = (props) => (
+const NavFooter = ({ location }) => (
   <ul className="nav flex-column">
     {
-        links.map((link, i) => (
-          <li className={clsx('nav-item', isActive(props.location, link.to) && 'active')} key={i}>
+        links.map((link) => (
+          <li className={clsx('nav-item', isActive(location, link.to) && 'active')} key={link.title}>
             <Link className="nav-link" to={link.to}>
               {link.title}
             </Link>
@@ -38,7 +38,9 @@ const NavFooter = (props) => (
 );
 
 NavFooter.propTypes = {
-
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
 };
 
 export default withRouter(NavFooter);

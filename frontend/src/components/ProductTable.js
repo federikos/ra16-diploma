@@ -40,7 +40,7 @@ ProductTable.propTypes = {
     material: PropTypes.string.isRequired,
     season: PropTypes.string.isRequired,
     reason: PropTypes.string.isRequired,
-  }),
+  }).isRequired,
 };
 
 export default ProductTable;

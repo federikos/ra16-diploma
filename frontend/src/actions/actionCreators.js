@@ -263,7 +263,7 @@ export const searchProducts = (query) => async (dispatch) => {
   debouncedFetch(dispatch);
 };
 
-export const fetchBestsellers = () => dispatch => {
+export const fetchBestsellers = () => (dispatch) => {
   dispatch(fetchBestsellersRequest());
 
   return fetch(`${process.env.REACT_APP_BASE_URL}top-sales`)

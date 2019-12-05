@@ -37,7 +37,25 @@ const Cards = ({
 );
 
 Cards.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      images: PropTypes.arrayOf(
+        PropTypes.string,
+      ),
+      title: PropTypes.string,
+      price: PropTypes.number,
+    }),
+  ).isRequired,
+  isCatalog: PropTypes.bool,
+  loading: PropTypes.bool,
+  error: PropTypes.oneOf([PropTypes.string, null]),
+};
 
+Cards.defaultProps = {
+  isCatalog: false,
+  loading: false,
+  error: null,
 };
 
 export default Cards;

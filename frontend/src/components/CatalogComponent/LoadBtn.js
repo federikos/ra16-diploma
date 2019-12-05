@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { productsListSelector } from '../../selectors';
 import { fetchProducts } from '../../actions/actionCreators';
@@ -15,9 +16,21 @@ const LoadBtn = ({ items }) => {
 
   return (
     <div className="text-center">
-      <button className="btn btn-outline-primary" onClick={handleLoadMore}>Загрузить ещё</button>
+      <button className="btn btn-outline-primary" onClick={handleLoadMore} type="button">
+        Загрузить ещё
+      </button>
     </div>
   );
+};
+
+LoadBtn.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({}),
+  ),
+};
+
+LoadBtn.defaultProps = {
+  items: [],
 };
 
 export default LoadBtn;
