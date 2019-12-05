@@ -1,15 +1,17 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { debouncedFetch } from '../../helpers';
 import PropTypes from 'prop-types';
 import { productsListSelector } from '../../selectors';
-import { searchProducts } from '../../actions/actionCreators';
+import { setSearchValue } from '../../actions/actionCreators';
 
 const Search = ({ isVisible }) => {
   const dispatch = useDispatch();
   const { query } = useSelector(productsListSelector);
 
   const handleInputChange = (e) => {
-    dispatch(searchProducts(e.target.value));
+    dispatch(setSearchValue(e.target.value));
+    debouncedFetch(dispatch);
   };
 
   if (!isVisible) return null;

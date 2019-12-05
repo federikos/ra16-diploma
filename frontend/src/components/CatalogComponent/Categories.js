@@ -11,7 +11,7 @@ const Categories = () => {
   const {
     items, categoryId, loading, error,
   } = useSelector(categoriesListSelector);
-  const itemsWithAll = [{ title: 'Все', id: null }].concat(items);
+  const itemsWithAll = [{ title: 'Все', id: null }, ...items];
 
   const handleClick = (e, id) => {
     e.preventDefault();

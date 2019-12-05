@@ -52,7 +52,7 @@ const Product = ({ match }) => {
       newItems = items.filter((item) => !(item.id === product.id && item.size === selectedSize));
     }
 
-    newItems = newItems.concat(newItem);
+    newItems = [...newItems, newItem];
     dispatch(setCartItems(newItems));
     history.push('/cart');
   };

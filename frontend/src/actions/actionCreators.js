@@ -1,5 +1,4 @@
 import queryString from 'query-string';
-import debounce from 'lodash/debounce';
 import {
   FETCH_PRODUCTS_REQUEST,
   FETCH_PRODUCTS_FAILURE,
@@ -189,7 +188,7 @@ export const sendOrder = (items, form) => (dispatch) => {
     .catch((error) => dispatch(sendOrderError(error)));
 };
 
-export const restoreCartFromLS = () => (dispatch) => {
+export const restoreCart = () => (dispatch) => {
   const items = JSON.parse(localStorage.getItem('cart'));
   if (items) {
     dispatch(replaceCartItems(items));
@@ -255,12 +254,9 @@ export const fetchProduct = (history, id) => async (dispatch) => {
     .catch((error) => dispatch(fetchProductFailure(error.message)));
 };
 
-const debouncedFetch = debounce((dispatch) => dispatch(fetchProducts(0)), 500);
-
 export const searchProducts = (query) => async (dispatch) => {
   dispatch(setSearchValue(query));
-
-  debouncedFetch(dispatch);
+  dispatch(fetchProducts(0));
 };
 
 export const fetchBestsellers = () => (dispatch) => {

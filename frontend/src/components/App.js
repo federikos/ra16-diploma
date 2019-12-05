@@ -11,13 +11,13 @@ import Catalog from '../pages/Catalog';
 import Contacts from '../pages/Contacts';
 import Main from '../pages/Main';
 import Product from '../pages/Product';
-import { restoreCartFromLS } from '../actions/actionCreators';
+import { restoreCart } from '../actions/actionCreators';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(restoreCartFromLS());
+    dispatch(restoreCart());
   }, []);
 
   return (

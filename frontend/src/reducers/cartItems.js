@@ -12,12 +12,8 @@ export default function searchReducer(state = initialState, action) {
     case REPLACE_CART_ITEMS:
       const { items } = action.payload;
 
-      let newItems = [];
-      if (items.length) {
-        newItems = [...items.map((item) => ({ ...item }))];
-      }
       return {
-        items: newItems,
+        items: [...items],
         cartItemsCount: items.length,
       };
     default:
