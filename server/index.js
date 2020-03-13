@@ -116,13 +116,13 @@ router.post('/api/order', async (ctx, next) => {
     return fortune(ctx, null, 204);
 });
 
-router.get('*', function(request, response) {
-    send(request, path.resolve(__dirname, '../react-ui/build', 'index.html'));
-});
+// router.get('*', function(request, response) {
+//     send(request, path.resolve(__dirname, '../react-ui/build', 'index.html'));
+// });
 
 app.use(router.routes())
 app.use(router.allowedMethods());
 
 const port = process.env.PORT || 7070;
 const server = http.createServer(app.callback());
-server.listen(port);
+server.listen(port);    
