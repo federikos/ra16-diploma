@@ -553,7 +553,7 @@ section {
   margin: 0 5px;
   border-radius: 50%;
   background-repeat: no-repeat;
-  background-image: url(/img/footer-sprite.png);
+  background-image: url(./img/footer-sprite.png);
 }
 .footer-social-link-twitter {
   background-position: -107px -42px;
