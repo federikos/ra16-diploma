@@ -25,7 +25,7 @@ import {
   FETCH_BESTSELLERS_SUCCESS,
 } from './actionTypes';
 
-const baseUrl = process.env.REACT_APP_BASE_URL || 'https://safe-falls-32075.herokuapp.com/api/';
+const baseUrl = process.env.REACT_APP_BASE_URL || 'https://ra-16-diploma-react-ecommerce.herokuapp.com/api/';
 
 export const fetchProductsRequest = () => ({
   type: FETCH_PRODUCTS_REQUEST,
