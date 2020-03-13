@@ -117,7 +117,7 @@ router.post('/api/order', async (ctx, next) => {
 });
 
 router.get('*', function(request, response) {
-    return send(request, path.resolve(__dirname, '../react-ui/build', 'index.html'));
+    return send(request, '../react-ui/build/index.html');
 });
 
 app.use(router.routes())
