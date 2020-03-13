@@ -25,6 +25,8 @@ import {
   FETCH_BESTSELLERS_SUCCESS,
 } from './actionTypes';
 
+const baseUrl = process.env.REACT_APP_BASE_URL || 'https://safe-falls-32075.herokuapp.com/api/';
+
 export const fetchProductsRequest = () => ({
   type: FETCH_PRODUCTS_REQUEST,
 });
@@ -165,7 +167,7 @@ export const setCartItems = (items) => (dispatch) => {
 export const sendOrder = (items, form) => (dispatch) => {
   dispatch(sendOrderRequest());
   const orderData = items.map((item) => ({ id: item.id, price: item.price, count: item.count }));
-  fetch(`${process.env.REACT_APP_BASE_URL}order`, {
+  fetch(`${baseUrl}order`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -204,7 +206,7 @@ export const fetchProducts = (offset) => async (dispatch, getState) => {
   }
 
   const params = queryString.stringify({ offset, categoryId, q: query });
-  const fetchUrl = `${process.env.REACT_APP_BASE_URL}items?${params}`;
+  const fetchUrl = `${baseUrl}items?${params}`;
 
   try {
     const response = await fetch(fetchUrl, {
@@ -230,7 +232,7 @@ export const fetchCategories = () => async (dispatch) => {
   dispatch(fetchCategoriesRequest());
 
   try {
-    const response = await fetch(`${process.env.REACT_APP_BASE_URL}categories`);
+    const response = await fetch(`${baseUrl}categories`);
 
     const data = await response.json();
     dispatch(fetchCategoriesSuccess(data));
@@ -242,7 +244,7 @@ export const fetchCategories = () => async (dispatch) => {
 export const fetchProduct = (history, id) => async (dispatch) => {
   dispatch(fetchProductRequest());
 
-  return fetch(`${process.env.REACT_APP_BASE_URL}items/${id}`)
+  return fetch(`${baseUrl}items/${id}`)
     .then((res) => {
       if (res.status === 404) {
         history.push('/404');
@@ -262,7 +264,7 @@ export const searchProducts = (query) => async (dispatch) => {
 export const fetchBestsellers = () => (dispatch) => {
   dispatch(fetchBestsellersRequest());
 
-  return fetch(`${process.env.REACT_APP_BASE_URL}top-sales`)
+  return fetch(`${baseUrl}top-sales`)
     .then((res) => res.json())
     .then((res) => dispatch(fetchBestsellersSuccess(res)))
     .catch((error) => dispatch(fetchBestsellersFailure(error.message)));

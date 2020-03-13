@@ -1,12 +1,15 @@
 const http = require('http');
 const fs = require('fs');
+const path = require('path');
 const Koa = require('koa');
 const Router = require('koa-router');
 const cors = require('koa2-cors');
 const koaBody = require('koa-body');
+const serve = require('koa-static');
+const send = require('koa-send');
 
-const categories = JSON.parse(fs.readFileSync('./backend/data/categories.json'));
-const items = JSON.parse(fs.readFileSync('./backend/data/products.json'));
+const categories = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data/categories.json')));
+const items = JSON.parse(fs.readFileSync('./server/data/products.json'));
 const topSaleIds = [66, 65, 73];
 const moreCount = 6;
 
@@ -42,6 +45,7 @@ const fortune = (ctx, body = null, status = 200) => {
 }
 
 const app = new Koa();
+app.use(serve(path.resolve(__dirname, '../react-ui/build')));
 app.use(cors());
 app.use(koaBody({
     json: true
@@ -110,6 +114,10 @@ router.post('/api/order', async (ctx, next) => {
     }
 
     return fortune(ctx, null, 204);
+});
+
+router.get('*', function(request, response) {
+    send(request, path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
 
 app.use(router.routes())

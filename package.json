@@ -1,28 +1,40 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
+  "name": "ra-16-diploma-cra-heroku",
+  "version": "3.0.0",
+  "description": "Ecommerce on react-redux using create-react-app with a custom Node API on Heroku",
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
-    "prestart": "npm install",
-    "start": "node backend/server.js",
-    "watch": "forever -w backend/server.js",
-    "build": "cd frontend/ && npm install && npm run build"
+    "start": "node server",
+    "watch": "forever -w server",
+    "build": "cd react-ui/ && npm install && npm run build"
   },
   "cacheDirectories": [
     "node_modules",
-    "frontend/node_modules"
+    "react-ui/node_modules"
   ],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "forever": "^1.0.0",
     "koa": "^2.7.0",
     "koa-body": "^4.1.1",
     "koa-router": "^7.4.0",
+    "koa-send": "^5.0.0",
+    "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/federikos/ra16-diploma.git"
-  }
+  },
+  "keywords": [
+    "ecommerce",
+    "react",
+    "redux",
+    "redux-thunk",
+    "node",
+    "heroku"
+  ],
+  "license": "MIT",
+  "devDependencies": {}
 }
