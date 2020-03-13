@@ -116,9 +116,9 @@ router.post('/api/order', async (ctx, next) => {
     return fortune(ctx, null, 204);
 });
 
-// router.get('*', function(request, response) {
-//     send(request, path.resolve(__dirname, '../react-ui/build', 'index.html'));
-// });
+router.get('*', function(request, response) {
+    return send(request, path.resolve(__dirname, '../react-ui/build', 'index.html'));
+});
 
 app.use(router.routes())
 app.use(router.allowedMethods());
